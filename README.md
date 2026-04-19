@@ -1,8 +1,7 @@
 # web_nodejs
 # Trabajo Práctico 1 - API REST con NodeJS y Express
-### Cursante: Francisco, Mariano Daniel - DNI 21094267
-
-# Trabajo Práctico 1 - API REST con NodeJS y Express
+### Cursante: Francisco, Mariano Daniel
+#### DNI 21094267 - Mat: 2347
 
 ## Descripción
 
@@ -25,7 +24,7 @@ En esta primera etapa no se implementa base de datos ni lógica de negocio real.
 ## Estructura del proyecto
 
 ```text
-proyecto_nodejs/
+proyecto_nodejs_tp1/
 ├── .env
 ├── .gitignore
 ├── package.json
@@ -36,10 +35,11 @@ proyecto_nodejs/
     ├── const/
     │   └── globalConstants.js
     ├── controllers/
-    │   └── api.controller.js
+    │   ├── medicos.controller.js
+    │   ├── pacientes.controller.js
+    │   └── tratamientos.controller.js
     └── routes/
         ├── index.routes.js
-        ├── api.routes.js
         ├── medicos.js
         ├── pacientes.js
         └── tratamientos.js

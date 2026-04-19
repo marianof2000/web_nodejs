@@ -1,12 +1,12 @@
 // RUTAS DE TRATAMIENTOS
 
-const router = require("express").Router(); // importar express.Router()
+const router = require("express").Router();
 
-const usuarioController = require("../controllers/api.controller"); // importar el archivo de controladores
+const tratamientosController = require("../controllers/tratamientos.controller");
 
-router.get("/prueba", usuarioController.pruebaTratamientos);
-router.get("/", usuarioController.listarTratamientos);
-router.post("/", usuarioController.crearTratamientos);
-router.get("/:idTratamiento", usuarioController.listarInfoTratamientos);
+router.get("/prueba", tratamientosController.prueba);
+router.get("/", tratamientosController.listar);
+router.post("/", tratamientosController.crear);
+router.get("/:idTratamiento", tratamientosController.listarInfo);
 
 module.exports = router;

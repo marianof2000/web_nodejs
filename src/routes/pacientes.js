@@ -1,12 +1,12 @@
 // RUTAS DE PACIENTES
 
-const router = require("express").Router(); // importar express.Router()
+const router = require("express").Router();
 
-const usuarioController = require("../controllers/api.controller"); // importar el archivo de controladores
+const pacientesController = require("../controllers/pacientes.controller");
 
-router.get("/prueba", usuarioController.pruebaPacientes);
-router.get("/", usuarioController.listarPacientes);
-router.post("/", usuarioController.crearPacientes);
-router.get("/:idPaciente", usuarioController.listarInfoPacientes);
+router.get("/prueba", pacientesController.prueba);
+router.get("/", pacientesController.listar);
+router.post("/", pacientesController.crear);
+router.get("/:idPaciente", pacientesController.listarInfo);
 
 module.exports = router;

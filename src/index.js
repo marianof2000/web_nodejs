@@ -5,8 +5,11 @@ require("dotenv").config();
 const express = require("express");
 const { rutas_init } = require("./routes/index.routes");
 const globalConstants = require("./const/globalConstants");
+const { testDBConnection } = require("./database/config/db.js");
 
 const PORT = globalConstants.PORT;
+
+testDBConnection();
 
 const crearAplicacion = () => {
   const app = express();

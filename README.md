@@ -18,6 +18,11 @@ En esta primera etapa no se implementa base de datos ni lógica de negocio real.
 - NodeJS
 - Express
 - Dotenv
+- Sequelize
+- PostgreSQL
+- pg
+- pg-hstore
+- Nodemon
 
 ---
 
@@ -38,6 +43,15 @@ proyecto_nodejs_tp1/
     │   ├── medicos.controller.js
     │   ├── pacientes.controller.js
     │   └── tratamientos.controller.js
+    ├── database/
+    │   ├── config/
+    │   │   ├── config.js
+    │   |   └── db.js
+    │   ├── migrationes/
+    │   ├── models/
+    │   |   └── index.js
+    │   └── seeders/
+
     └── routes/
         ├── index.routes.js
         ├── medicos.js

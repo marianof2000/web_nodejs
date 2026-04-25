@@ -22,5 +22,6 @@
     "sequelize": "^6.37.8",
     "sequelize-cli": "^6.6.5"
   },
-  "description": "Trabajo Practico 1 - API REST con NodeJS y Express"
+  "description": "Trabajo Practico 1 - API REST con NodeJS y Express",
+  "db:create": "npx sequelize-cli db:create"
 }

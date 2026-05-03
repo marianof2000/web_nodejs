@@ -48,7 +48,17 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Medico.associate = models => {
-    
+    Medico.hasMany(models.paciente_medico, {
+      foreignKey: 'medicoId',
+      as: 'paciente_medicos'
+    })
+
+    Medico.belongsToMany(models.paciente, {
+      through: models.paciente_medico,
+      foreignKey: 'medicoId',
+      otherKey: 'pacienteId',
+      as: 'pacientes'
+    })
   }
 
   return Medico

@@ -1,5 +1,5 @@
 # web_nodejs
-# Trabajo Práctico 1 y 2 - API REST con NodeJS y Express
+# Trabajo Práctico - API REST con NodeJS
 ### Cursante: Francisco, Mariano Daniel
 #### DNI 21094267 - Mat: 2347
 
@@ -32,14 +32,69 @@ Trabajo Final: Agregar JWT al proyecto
 
 ---
 
+## Para ejecutar el proyecto
+
+1. Instalar dependencias:
+
+```bash
+npm install
+```
+
+2. Crear el archivo `.env` tomando como referencia `.env.example` y completar los datos de conexión.
+
+3. Si se usa la base de datos remota, abrir el túnel SSH:
+
+```bash
+ssh -L 5433:127.0.0.1:5432 user@200.45.133.87
+```
+
+4. Crear la base de datos:
+
+```bash
+npm run db:create
+```
+
+5. Ejecutar las migraciones:
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+6. Cargar los seeders:
+
+```bash
+npm run db:seed
+```
+
+7. Iniciar el servidor:
+
+```bash
+npm start
+```
+
+La API queda disponible en el puerto configurado en `.env`.
+
+---
+
+## Conexión a la base de datos
+
+Conectar a la base de datos remota con: 
+
+ssh -L 5433:127.0.0.1:5432 user@200.45.133.87
+
+password: ***
+
+---
+
 ## Estructura del proyecto
 
 ```text
-proyecto_nodejs_TP1/
+Web_NodeJS_TP/
 ├── package.json
 ├── package-lock.json
 ├── .sequelizerc
 ├── .env
+├── .env.example
 ├── .gitignore
 ├── README.md
 └── src/
@@ -48,21 +103,20 @@ proyecto_nodejs_TP1/
     │   ├── errors.js
     │   └── globalConstants.js
     ├── controllers/
-    │   ├── medicos.controller.js
-    │   ├── pacientes.controller.js
-    │   └── tratamientos.controller.js
+    │   ├── medico.controller.js
+    │   ├── paciente.controller.js
+    │   └── paciente_medico.controller.js
     ├── routes/
     │   ├── index.routes.js
-    │   ├── medicos.js
-    │   ├── pacientes.js
-    │   └── tratamientos.js
+    │   ├── medico.routes.js
+    │   ├── paciente.routes.js
+    │   └── paciente_medico.routes.js
     ├── middlewares/
     │   ├── error.js
     │   ├── validate.js
-    │   └── scheme/
+    │   └── schemes/
     │       ├── medico.scheme.js
-    │       ├── paciente.scheme.js
-    │       └── tratamiento.scheme.js
+    │       └── paciente.scheme.js
     └── database/
         ├── config/
         │   └── config.js
@@ -70,27 +124,25 @@ proyecto_nodejs_TP1/
         │   ├── index.js
         │   ├── medico.js
         │   ├── paciente.js
-        │   ├── paciente-medico.js
-        │   └── tratamiento.js
+        │   └── paciente_medico.js
         ├── migrations/
+        │   └── paciente-agregar-sintoma.js
         └── seeders/
-            ├── 000-medicos.js
-            ├── 100-pacientes.js
-            ├── 200-paciente-medico.js
-            └── 300-tratamientos.js
+            ├── crear_medicos.js
+            ├── crear_pacientes.js
+            └── crear_relaciones_paciente_medico.js
 ```
+---
 
 ## Descripción de carpetas principales
 
-```md
 - `src/index.js`: archivo principal de la API. Configura Express, middlewares, rutas y puerto de ejecución.
-- `src/routes/`: contiene las rutas de la API, separadas por recurso.
-- `src/controllers/`: contiene la lógica de cada endpoint. Los controladores reciben la petición, consultan la base de datos y devuelven la respuesta.
-- `src/database/models/`: contiene los modelos Sequelize que representan las tablas de la base de datos.
+- `src/routes/`: contiene las rutas de la API separadas por recurso: pacientes, médicos y relaciones entre pacientes y médicos.
+- `src/controllers/`: contiene la lógica de cada endpoint. Los controladores reciben la petición, consultan o modifican la base de datos y devuelven la respuesta.
+- `src/database/models/`: contiene los modelos Sequelize que representan las tablas de la base de datos y sus asociaciones.
 - `src/database/config/`: contiene la configuración de conexión a PostgreSQL.
-- `src/database/seeders/`: contiene datos iniciales de prueba para cargar la base de datos.
-- `src/database/migrations/`: contiene migraciones de Sequelize, si se agregan cambios estructurales en la base de datos.
-- `src/middlewares/`: contiene funciones intermedias de Express, como validación de datos y manejo de errores.
-- `src/middlewares/scheme/`: contiene los esquemas Joi usados para validar los datos recibidos por body.
+- `src/database/seeders/`: contiene datos iniciales de prueba para cargar médicos, pacientes y relaciones entre ambos.
+- `src/database/migrations/`: contiene migraciones de Sequelize para aplicar cambios estructurales en la base de datos.
+- `src/middlewares/`: contiene funciones intermedias de Express, como validación de datos y manejo centralizado de errores.
+- `src/middlewares/schemes/`: contiene los esquemas Joi usados para validar los datos recibidos por body antes de llegar a los controladores.
 - `src/const/`: contiene constantes globales y errores personalizados.
-```

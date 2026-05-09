@@ -17,7 +17,7 @@ module.exports = {
             var contraseniaCoincide = false
             if (medico) {  // Si existe el usuario
                 // 2. Verifico que la contraseña sea correcta
-                contraseniaCoincide = bcrypt.compareSync(req.body.password, user.password) // Comparo la contraseña ingresada con la contraseña de la base de datos
+                contraseniaCoincide = bcrypt.compareSync(req.body.password, medico.password) // Comparo la contraseña ingresada con la contraseña de la base de datos
             }
             if (!medico || !contraseniaCoincide) {
                 return next(errors.CredencialesInvalidas)

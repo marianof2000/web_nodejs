@@ -26,6 +26,7 @@ Trabajo Final: Agregar JWT al proyecto
 - PostgreSQL
 - pg
 - pg-hstore
+- Moment
 - Nodemon
 - joi
 - Multer
@@ -103,18 +104,23 @@ Web_NodeJS_TP/
     │   ├── errors.js
     │   └── globalConstants.js
     ├── controllers/
+    │   ├── auth.controller.js
     │   ├── medico.controller.js
     │   ├── paciente.controller.js
     │   └── paciente_medico.controller.js
     ├── routes/
+    │   ├── auth.routes.js
     │   ├── index.routes.js
     │   ├── medico.routes.js
     │   ├── paciente.routes.js
     │   └── paciente_medico.routes.js
     ├── middlewares/
+    │   ├── decodeJWT.js
     │   ├── error.js
+    │   ├── signJWT.js
     │   ├── validate.js
     │   └── schemes/
+    │       ├── auth.scheme.js
     │       ├── medico.scheme.js
     │       └── paciente.scheme.js
     └── database/
@@ -126,23 +132,23 @@ Web_NodeJS_TP/
         │   ├── paciente.js
         │   └── paciente_medico.js
         ├── migrations/
+        │   ├── medico-agregar-password.js
         │   └── paciente-agregar-sintoma.js
         └── seeders/
-            ├── crear_medicos.js
-            ├── crear_pacientes.js
-            └── crear_relaciones_paciente_medico.js
+            ├── crear_medicos_nuevos.js
+            └── crear_pacientes.js
 ```
 ---
 
 ## Descripción de carpetas principales
 
 - `src/index.js`: archivo principal de la API. Configura Express, middlewares, rutas y puerto de ejecución.
-- `src/routes/`: contiene las rutas de la API separadas por recurso: pacientes, médicos y relaciones entre pacientes y médicos.
+- `src/routes/`: contiene las rutas de la API separadas por recurso: autenticación, pacientes, médicos y relaciones entre pacientes y médicos.
 - `src/controllers/`: contiene la lógica de cada endpoint. Los controladores reciben la petición, consultan o modifican la base de datos y devuelven la respuesta.
 - `src/database/models/`: contiene los modelos Sequelize que representan las tablas de la base de datos y sus asociaciones.
 - `src/database/config/`: contiene la configuración de conexión a PostgreSQL.
 - `src/database/seeders/`: contiene datos iniciales de prueba para cargar médicos, pacientes y relaciones entre ambos.
 - `src/database/migrations/`: contiene migraciones de Sequelize para aplicar cambios estructurales en la base de datos.
-- `src/middlewares/`: contiene funciones intermedias de Express, como validación de datos y manejo centralizado de errores.
+- `src/middlewares/`: contiene funciones intermedias de Express, como validación de datos, manejo centralizado de errores y generación/decodificación de JWT.
 - `src/middlewares/schemes/`: contiene los esquemas Joi usados para validar los datos recibidos por body antes de llegar a los controladores.
 - `src/const/`: contiene constantes globales y errores personalizados.

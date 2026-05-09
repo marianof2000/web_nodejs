@@ -24,6 +24,9 @@ module.exports = {
         code: 1006,
         message: 'Médico no autorizado'
     },
-
+    "SesionExpirada": {
+        code: 1007,
+        message: 'Sesión expirada'
+    }
 
 }

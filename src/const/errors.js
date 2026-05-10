@@ -16,16 +16,20 @@ module.exports = {
         code: 1004,
         message: 'El medico no existe'
     },
-    'CredencialesInvalidas': {
+    'TratamientoInexistente': {
         code: 1005,
+        message: 'El tratamiento no existe'
+    },
+    'CredencialesInvalidas': {
+        code: 1006,
         message: 'Credenciales invalidas'
     },
     'MedicoNoAutorizado': {
-        code: 1006,
+        code: 1007,
         message: 'Médico no autorizado'
     },
     "SesionExpirada": {
-        code: 1007,
+        code: 1008,
         message: 'Sesión expirada'
     }
 

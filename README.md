@@ -107,13 +107,15 @@ Web_NodeJS_TP/
     │   ├── auth.controller.js
     │   ├── medico.controller.js
     │   ├── paciente.controller.js
-    │   └── paciente_medico.controller.js
+    │   ├── paciente_medico.controller.js
+    │   └── tratamiento.controller.js
     ├── routes/
     │   ├── auth.routes.js
     │   ├── index.routes.js
     │   ├── medico.routes.js
     │   ├── paciente.routes.js
-    │   └── paciente_medico.routes.js
+    │   ├── paciente_medico.routes.js
+    │   └── tratamiento.routes.js
     ├── middlewares/
     │   ├── decodeJWT.js
     │   ├── error.js
@@ -122,7 +124,8 @@ Web_NodeJS_TP/
     │   └── schemes/
     │       ├── auth.scheme.js
     │       ├── medico.scheme.js
-    │       └── paciente.scheme.js
+    │       ├── paciente.scheme.js
+    │       └── tratamiento.scheme.js
     └── database/
         ├── config/
         │   └── config.js
@@ -130,7 +133,8 @@ Web_NodeJS_TP/
         │   ├── index.js
         │   ├── medico.js
         │   ├── paciente.js
-        │   └── paciente_medico.js
+        │   ├── paciente_medico.js
+        │   └── tratamiento.js
         ├── migrations/
         │   ├── medico-agregar-password.js
         │   └── paciente-agregar-sintoma.js
@@ -143,7 +147,7 @@ Web_NodeJS_TP/
 ## Descripción de carpetas principales
 
 - `src/index.js`: archivo principal de la API. Configura Express, middlewares, rutas y puerto de ejecución.
-- `src/routes/`: contiene las rutas de la API separadas por recurso: autenticación, pacientes, médicos y relaciones entre pacientes y médicos.
+- `src/routes/`: contiene las rutas de la API separadas por recurso: autenticación, pacientes, médicos, relaciones entre pacientes y médicos, y tratamientos.
 - `src/controllers/`: contiene la lógica de cada endpoint. Los controladores reciben la petición, consultan o modifican la base de datos y devuelven la respuesta.
 - `src/database/models/`: contiene los modelos Sequelize que representan las tablas de la base de datos y sus asociaciones.
 - `src/database/config/`: contiene la configuración de conexión a PostgreSQL.
@@ -152,3 +156,136 @@ Web_NodeJS_TP/
 - `src/middlewares/`: contiene funciones intermedias de Express, como validación de datos, manejo centralizado de errores y generación/decodificación de JWT.
 - `src/middlewares/schemes/`: contiene los esquemas Joi usados para validar los datos recibidos por body antes de llegar a los controladores.
 - `src/const/`: contiene constantes globales y errores personalizados.
+
+---
+
+## Endpoints principales
+
+### Tratamientos
+
+- `GET /tratamientos`: lista todos los tratamientos, incluyendo la información del paciente y del médico asociados.
+- `GET /tratamientos/:idTratamiento`: obtiene la información de un tratamiento puntual.
+- `POST /tratamientos`: crea un nuevo tratamiento.
+
+Ejemplo de body para crear un tratamiento:
+
+```json
+{
+  "nombre": "Kinesiologia",
+  "descripcion": "Tratamiento semanal",
+  "pacienteId": 1,
+  "medicoId": 1
+}
+```
+
+---
+
+## Testeo de Endpoints
+
+Los siguientes ejemplos usan `curl`.
+
+### Pacientes
+
+Listar pacientes:
+
+```bash
+curl http://localhost:8000/pacientes
+```
+
+Obtener un paciente por ID:
+
+```bash
+curl http://localhost:8000/pacientes/1
+```
+
+Crear un paciente:
+
+```bash
+curl -X POST http://localhost:8000/pacientes \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Juan",
+    "apellido": "Perez",
+    "email": "juan.perez@example.com",
+    "edad": 35,
+    "obra_social": "OSDE",
+    "medicoId": 1
+  }'
+```
+
+### Médicos
+
+Listar médicos:
+
+```bash
+curl http://localhost:8000/medicos
+```
+
+Obtener un médico por ID:
+
+```bash
+curl http://localhost:8000/medicos/1
+```
+
+Crear un médico:
+
+```bash
+curl -X POST http://localhost:8000/medicos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Ana",
+    "apellido": "Gomez",
+    "email": "ana.gomez@example.com",
+    "especialidad": "Clinica medica",
+    "tiempo_trabajando": 8,
+    "password": "123456"
+  }'
+```
+
+### Pacientes y Médicos
+
+Listar relaciones entre pacientes y médicos:
+
+```bash
+curl http://localhost:8000/pacientes-medicos
+```
+
+### Tratamientos
+
+Listar tratamientos:
+
+```bash
+curl http://localhost:8000/tratamientos
+```
+
+Obtener un tratamiento por ID:
+
+```bash
+curl http://localhost:8000/tratamientos/1
+```
+
+Crear un tratamiento:
+
+```bash
+curl -X POST http://localhost:8000/tratamientos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Kinesiologia",
+    "descripcion": "Tratamiento semanal",
+    "pacienteId": 1,
+    "medicoId": 1
+  }'
+```
+
+### Autenticación
+
+Login:
+
+```bash
+curl -X POST http://localhost:8000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "ana.gomez@example.com",
+    "password": "123456"
+  }'
+```

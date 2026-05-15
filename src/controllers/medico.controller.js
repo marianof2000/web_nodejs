@@ -8,7 +8,9 @@ module.exports = {
 
     listar: async (req, res, next) => {
         try {
-            const medicos = await models.medico.findAll()
+            const medicos = await models.medico.findAll({
+                attributes: { exclude: ['password'] }
+            })
 
             res.json({
                 success: true,
@@ -27,7 +29,8 @@ module.exports = {
             const medico = await models.medico.findOne({
                 where: {
                     id: req.params.idMedico
-                }
+                },
+                attributes: { exclude: ['password'] }
             })
             if (!medico) return next(errors.MedicoInexistente)
 

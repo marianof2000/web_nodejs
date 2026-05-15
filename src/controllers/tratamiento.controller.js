@@ -13,7 +13,8 @@ module.exports = {
                         model: models.paciente
                     },
                     {
-                        model: models.medico
+                        model: models.medico,
+                        attributes: { exclude: ['password'] }
                     }
                 ]
             })
@@ -41,7 +42,8 @@ module.exports = {
                         model: models.paciente
                     },
                     {
-                        model: models.medico
+                        model: models.medico,
+                        attributes: { exclude: ['password'] }
                     }
                 ]
             })

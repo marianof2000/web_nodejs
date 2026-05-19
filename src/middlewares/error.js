@@ -43,9 +43,14 @@ module.exports = function (err, req, res, next) {
   if (
     err === errors.PacienteInexistente ||
     err === errors.MedicoInexistente ||
-    err === errors.TratamientoInexistente
+    err === errors.TratamientoInexistente ||
+    err === errors.TurnoInexistente
   ) {
     status = 404
+  }
+
+  if (err === errors.TurnoOcupado) {
+    status = 409
   }
 
   res.status(status).json(response) // envia la respuesta al cliente

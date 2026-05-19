@@ -7,6 +7,7 @@ const pacienteRoutes = require("./paciente.routes")
 const medicoRoutes = require("./medico.routes")
 const pacienteMedicoRoutes = require("./paciente_medico.routes")
 const tratamientoRoutes = require("./tratamiento.routes")
+const turnoRoutes = require("./turno.routes")
 
 const rutas_init = () => { // aca se ponen todas las rutas que existen
   const router = Router() // crear una instancia de express.Router()
@@ -15,6 +16,7 @@ const rutas_init = () => { // aca se ponen todas las rutas que existen
   router.use("/medicos", medicoRoutes)
   router.use("/pacientes-medicos", pacienteMedicoRoutes)
   router.use("/tratamientos", tratamientoRoutes)
+  router.use("/turnos", turnoRoutes)
   router.use("/auth", authRoutes)
 
   return router // retornar el router

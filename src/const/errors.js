@@ -20,6 +20,14 @@ module.exports = {
         code: 1005,
         message: 'El tratamiento no existe'
     },
+    'TurnoInexistente': {
+        code: 1009,
+        message: 'El turno no existe'
+    },
+    'TurnoOcupado': {
+        code: 1010,
+        message: 'El medico ya tiene un turno en esa fecha y hora'
+    },
     'CredencialesInvalidas': {
         code: 1006,
         message: 'Credenciales invalidas'

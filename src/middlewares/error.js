@@ -2,6 +2,8 @@ const errors = require('../const/errors')
 
 module.exports = function (err, req, res, next) {
 
+  let status = err.status || err.statusCode || 500
+
   let response = {
     success: false,
     error: {
@@ -12,6 +14,7 @@ module.exports = function (err, req, res, next) {
 
   // si el error es de Joi, es decir, si el error es de validacion
   if (err.isJoi) {
+    status = 400
     let validationErrorType = err.details[0].type // obtener el tipo de error de validacion
     let errorKey = 'ValidationError' 
     if (validationErrorType === 'any.required') { // si el error es de validacion de campos requeridos
@@ -24,9 +27,26 @@ module.exports = function (err, req, res, next) {
 
   // si el error es de NotFound
   if (err.message === 'Not Found') { 
+    status = 404
     response.error.code = 404 
     response.error.message = 'Not Found'
   }
 
-  res.status(200).json(response) // envia la respuesta al cliente
+  if (
+    err === errors.CredencialesInvalidas ||
+    err === errors.MedicoNoAutorizado ||
+    err === errors.SesionExpirada
+  ) {
+    status = 401
+  }
+
+  if (
+    err === errors.PacienteInexistente ||
+    err === errors.MedicoInexistente ||
+    err === errors.TratamientoInexistente
+  ) {
+    status = 404
+  }
+
+  res.status(status).json(response) // envia la respuesta al cliente
 }

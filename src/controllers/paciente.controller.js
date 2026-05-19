@@ -45,14 +45,22 @@ module.exports = {
     crear: async (req, res, next) => {
         try {
             const { medicoId, ...datosPaciente } = req.body
-            const paciente = await models.paciente.create(datosPaciente)
-
-            if (medicoId) {
-                await models.paciente_medico.create({
-                    pacienteId: paciente.id,
-                    medicoId: medicoId
+            const paciente = await models.sequelize.transaction(async (transaction) => {
+                const pacienteCreado = await models.paciente.create(datosPaciente, {
+                    transaction
                 })
-            }
+
+                if (medicoId) {
+                    await models.paciente_medico.create({
+                        pacienteId: pacienteCreado.id,
+                        medicoId: medicoId
+                    }, {
+                        transaction
+                    })
+                }
+
+                return pacienteCreado
+            })
 
             res.json({
                 success: true,

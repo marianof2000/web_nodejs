@@ -48,9 +48,8 @@ module.exports = {
 
     crear: async (req, res, next) => {
         try {
+            req.body.password = bcrypt.hashSync(req.body.password, 10)
             const medico = await models.medico.create(req.body)
-            medico.password = bcrypt.hashSync(medico.password, 10)
-            await medico.save()
 
             res.json({
                 success: true,

@@ -1,0 +1,20 @@
+services:
+  api:
+    build: .
+    container_name: api_node
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      ENVIRONMENT: production
+      DB_HOST: postgres_tp2
+      DB_PORT: 5432
+    networks:
+      - tp2_net
+    restart: unless-stopped
+
+networks:
+  tp2_net:
+    external: true

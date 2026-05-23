@@ -77,6 +77,58 @@ La API queda disponible en el puerto configurado en `.env`.
 
 ---
 
+## Para ejecutar con Docker en un VPS
+
+1. Copiar el proyecto al servidor.
+
+2. Crear el archivo `.env` tomando como base `.env.example` y cambiar `JWT_SECRET` por una clave segura.
+
+3. Crear una red Docker compartida, si todavía no existe:
+
+```bash
+docker network create tp2_net
+```
+
+4. Conectar el contenedor PostgreSQL existente a esa red:
+
+```bash
+docker network connect tp2_net postgres_tp2
+```
+
+Si el contenedor ya estaba conectado, Docker puede indicar que ya pertenece a esa red.
+
+5. Levantar la API:
+
+```bash
+docker compose up -d --build
+```
+
+6. Ver logs de la API:
+
+```bash
+docker compose logs -f api
+```
+
+7. Cargar datos iniciales, si se necesitan:
+
+```bash
+docker compose exec api npm run db:seed
+```
+
+La API queda disponible en:
+
+```text
+http://IP_DEL_SERVIDOR:8000
+```
+
+Para detener los contenedores:
+
+```bash
+docker compose down
+```
+
+---
+
 ## Conexión a la base de datos
 
 Conectar a la base de datos remota con: 

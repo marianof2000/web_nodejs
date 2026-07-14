@@ -28,6 +28,14 @@ module.exports = {
         code: 1010,
         message: 'El medico ya tiene un turno en esa fecha y hora'
     },
+    'RelacionPacienteMedicoInexistente': {
+        code: 1011,
+        message: 'La relacion entre paciente y medico no existe'
+    },
+    'RelacionPacienteMedicoExistente': {
+        code: 1012,
+        message: 'La relacion entre paciente y medico ya existe'
+    },
     'CredencialesInvalidas': {
         code: 1006,
         message: 'Credenciales invalidas'

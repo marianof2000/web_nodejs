@@ -47,7 +47,7 @@ module.exports = {
 
             const medico = await models.medico.create(req.body) // creo el usuario
 
-            res.json({
+            res.status(201).location(`/medicos/${medico.id}`).json({
                 success: true,
                 data: {
                     id: medico.id

@@ -8,16 +8,17 @@ const medicoRoutes = require("./medico.routes")
 const pacienteMedicoRoutes = require("./paciente_medico.routes")
 const tratamientoRoutes = require("./tratamiento.routes")
 const turnoRoutes = require("./turno.routes")
+const decodeJWT = require("../middlewares/decodeJWT")
 
 const rutas_init = () => { // aca se ponen todas las rutas que existen
   const router = Router() // crear una instancia de express.Router()
 
-  router.use("/pacientes", pacienteRoutes)
-  router.use("/medicos", medicoRoutes)
-  router.use("/pacientes-medicos", pacienteMedicoRoutes)
-  router.use("/tratamientos", tratamientoRoutes)
-  router.use("/turnos", turnoRoutes)
   router.use("/auth", authRoutes)
+  router.use("/pacientes", decodeJWT, pacienteRoutes)
+  router.use("/medicos", decodeJWT, medicoRoutes)
+  router.use("/pacientes-medicos", decodeJWT, pacienteMedicoRoutes)
+  router.use("/tratamientos", decodeJWT, tratamientoRoutes)
+  router.use("/turnos", decodeJWT, turnoRoutes)
 
   return router // retornar el router
 };

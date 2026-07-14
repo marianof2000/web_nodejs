@@ -99,7 +99,7 @@ module.exports = {
 
             const turno = await models.turno.create(req.body)
 
-            res.json({
+            res.status(201).location(`/turnos/${turno.id}`).json({
                 success: true,
                 data: {
                     id: turno.id
@@ -176,12 +176,7 @@ module.exports = {
 
             await turno.destroy()
 
-            res.json({
-                success: true,
-                data: {
-                    id: turno.id
-                }
-            })
+            res.status(204).send()
 
         } catch (err) {
             return next(err)

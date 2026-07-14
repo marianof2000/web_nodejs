@@ -65,12 +65,71 @@ module.exports = {
         try {
             const tratamiento = await models.tratamiento.create(req.body)
 
+            res.status(201).location(`/tratamientos/${tratamiento.id}`).json({
+                success: true,
+                data: {
+                    id: tratamiento.id
+                }
+            })
+
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    actualizar: async (req, res, next) => {
+        try {
+            const tratamiento = await models.tratamiento.findOne({
+                where: {
+                    id: req.params.idTratamiento
+                }
+            })
+            if (!tratamiento) return next(errors.TratamientoInexistente)
+
+            if (req.body.pacienteId) {
+                const paciente = await models.paciente.findOne({
+                    where: {
+                        id: req.body.pacienteId
+                    }
+                })
+                if (!paciente) return next(errors.PacienteInexistente)
+            }
+
+            if (req.body.medicoId) {
+                const medico = await models.medico.findOne({
+                    where: {
+                        id: req.body.medicoId
+                    }
+                })
+                if (!medico) return next(errors.MedicoInexistente)
+            }
+
+            await tratamiento.update(req.body)
+
             res.json({
                 success: true,
                 data: {
                     id: tratamiento.id
                 }
             })
+
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    eliminar: async (req, res, next) => {
+        try {
+            const tratamiento = await models.tratamiento.findOne({
+                where: {
+                    id: req.params.idTratamiento
+                }
+            })
+            if (!tratamiento) return next(errors.TratamientoInexistente)
+
+            await tratamiento.destroy()
+
+            res.status(204).send()
 
         } catch (err) {
             return next(err)

@@ -44,6 +44,15 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     paranoid: true,
     freezeTableName: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['medicoId', 'fecha', 'hora'],
+        where: {
+          deleted_at: null
+        }
+      }
+    ]
   })
 
   Turno.associate = models => {

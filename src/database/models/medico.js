@@ -49,7 +49,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     paranoid: true, 
-    freezeTableName: true, 
+    freezeTableName: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['email'],
+        where: {
+          deleted_at: null
+        }
+      }
+    ]
   })
 
   Medico.associate = models => {

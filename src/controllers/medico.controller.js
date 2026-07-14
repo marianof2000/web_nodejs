@@ -51,12 +51,57 @@ module.exports = {
             req.body.password = bcrypt.hashSync(req.body.password, 10)
             const medico = await models.medico.create(req.body)
 
+            res.status(201).location(`/medicos/${medico.id}`).json({
+                success: true,
+                data: {
+                    id: medico.id
+                }
+            })
+
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    actualizar: async (req, res, next) => {
+        try {
+            const medico = await models.medico.findOne({
+                where: {
+                    id: req.params.idMedico
+                }
+            })
+            if (!medico) return next(errors.MedicoInexistente)
+
+            if (req.body.password) {
+                req.body.password = bcrypt.hashSync(req.body.password, 10)
+            }
+
+            await medico.update(req.body)
+
             res.json({
                 success: true,
                 data: {
                     id: medico.id
                 }
             })
+
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    eliminar: async (req, res, next) => {
+        try {
+            const medico = await models.medico.findOne({
+                where: {
+                    id: req.params.idMedico
+                }
+            })
+            if (!medico) return next(errors.MedicoInexistente)
+
+            await medico.destroy()
+
+            res.status(204).send()
 
         } catch (err) {
             return next(err)

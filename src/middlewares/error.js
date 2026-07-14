@@ -44,12 +44,16 @@ module.exports = function (err, req, res, next) {
     err === errors.PacienteInexistente ||
     err === errors.MedicoInexistente ||
     err === errors.TratamientoInexistente ||
-    err === errors.TurnoInexistente
+    err === errors.TurnoInexistente ||
+    err === errors.RelacionPacienteMedicoInexistente
   ) {
     status = 404
   }
 
-  if (err === errors.TurnoOcupado) {
+  if (
+    err === errors.TurnoOcupado ||
+    err === errors.RelacionPacienteMedicoExistente
+  ) {
     status = 409
   }
 

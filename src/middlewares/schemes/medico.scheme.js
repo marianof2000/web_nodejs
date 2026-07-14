@@ -9,6 +9,16 @@ let crearMedico = Joi.object({
     password: Joi.string().required(),
 })
 
+let actualizarMedico = Joi.object({
+    nombre: Joi.string(),
+    apellido: Joi.string(),
+    email: Joi.string().email().optional(),
+    especialidad: Joi.string(),
+    tiempo_trabajando: Joi.number().integer().min(0),
+    password: Joi.string(),
+}).min(1)
+
 module.exports = {
     crearMedico,
+    actualizarMedico,
 }

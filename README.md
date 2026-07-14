@@ -213,41 +213,60 @@ Web_NodeJS_TP/
 
 ## Endpoints principales
 
-### Tratamientos
-
-- `GET /tratamientos`: lista todos los tratamientos, incluyendo la información del paciente y del médico asociados.
-- `GET /tratamientos/:idTratamiento`: obtiene la información de un tratamiento puntual.
-- `POST /tratamientos`: crea un nuevo tratamiento.
-
-Ejemplo de body para crear un tratamiento:
-
-```json
-{
-  "nombre": "Kinesiologia",
-  "descripcion": "Tratamiento semanal",
-  "pacienteId": 1,
-  "medicoId": 1
-}
-```
+| Método | Ruta | Auth | Descripción | Códigos esperados |
+| --- | --- | --- | --- | --- |
+| `POST` | `/auth/login` | No | Inicia sesión y devuelve JWT | `200`, `400`, `401` |
+| `POST` | `/auth/registrarse` | No | Registra un médico | `201`, `400` |
+| `GET` | `/pacientes` | Sí | Lista pacientes | `200`, `401` |
+| `GET` | `/pacientes/:idPaciente` | Sí | Obtiene un paciente | `200`, `400`, `401`, `404` |
+| `POST` | `/pacientes` | Sí | Crea un paciente | `201`, `400`, `401` |
+| `PATCH` | `/pacientes/:idPaciente` | Sí | Actualiza parcialmente un paciente | `200`, `400`, `401`, `404` |
+| `DELETE` | `/pacientes/:idPaciente` | Sí | Elimina un paciente | `204`, `400`, `401`, `404` |
+| `GET` | `/medicos` | Sí | Lista médicos | `200`, `401` |
+| `GET` | `/medicos/:idMedico` | Sí | Obtiene un médico | `200`, `400`, `401`, `404` |
+| `POST` | `/medicos` | Sí | Crea un médico | `201`, `400`, `401` |
+| `PATCH` | `/medicos/:idMedico` | Sí | Actualiza parcialmente un médico | `200`, `400`, `401`, `404` |
+| `DELETE` | `/medicos/:idMedico` | Sí | Elimina un médico | `204`, `400`, `401`, `404` |
+| `GET` | `/tratamientos` | Sí | Lista tratamientos | `200`, `401` |
+| `GET` | `/tratamientos/:idTratamiento` | Sí | Obtiene un tratamiento | `200`, `400`, `401`, `404` |
+| `POST` | `/tratamientos` | Sí | Crea un tratamiento | `201`, `400`, `401` |
+| `PATCH` | `/tratamientos/:idTratamiento` | Sí | Actualiza parcialmente un tratamiento | `200`, `400`, `401`, `404` |
+| `DELETE` | `/tratamientos/:idTratamiento` | Sí | Elimina un tratamiento | `204`, `400`, `401`, `404` |
+| `GET` | `/turnos` | Sí | Lista turnos, con filtros opcionales | `200`, `401` |
+| `GET` | `/turnos/:idTurno` | Sí | Obtiene un turno | `200`, `400`, `401`, `404` |
+| `POST` | `/turnos` | Sí | Crea un turno | `201`, `400`, `401`, `404`, `409` |
+| `PATCH` | `/turnos/:idTurno` | Sí | Actualiza parcialmente un turno | `200`, `400`, `401`, `404`, `409` |
+| `DELETE` | `/turnos/:idTurno` | Sí | Elimina un turno | `204`, `400`, `401`, `404` |
+| `GET` | `/pacientes-medicos` | Sí | Lista vínculos paciente-médico | `200`, `401` |
+| `GET` | `/pacientes/:idPaciente/medicos` | Sí | Lista médicos de un paciente | `200`, `400`, `401`, `404` |
+| `GET` | `/medicos/:idMedico/pacientes` | Sí | Lista pacientes de un médico | `200`, `400`, `401`, `404` |
+| `POST` | `/pacientes/:idPaciente/medicos/:idMedico` | Sí | Vincula un paciente con un médico | `201`, `400`, `401`, `404`, `409` |
+| `DELETE` | `/pacientes/:idPaciente/medicos/:idMedico` | Sí | Elimina el vínculo entre paciente y médico | `204`, `400`, `401`, `404` |
 
 ---
 
 ## Testeo de Endpoints
 
-Los siguientes ejemplos usan `curl`.
+Los siguientes ejemplos usan `curl`. Salvo `/auth/login` y `/auth/registrarse`, las rutas requieren el token JWT:
+
+```bash
+TOKEN="TOKEN_DEVUELTO_POR_LOGIN"
+```
 
 ### Pacientes
 
 Listar pacientes:
 
 ```bash
-curl http://localhost:8000/pacientes
+curl http://localhost:8000/pacientes \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 Obtener un paciente por ID:
 
 ```bash
-curl http://localhost:8000/pacientes/1
+curl http://localhost:8000/pacientes/1 \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 Crear un paciente:
@@ -255,6 +274,7 @@ Crear un paciente:
 ```bash
 curl -X POST http://localhost:8000/pacientes \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "nombre": "Juan",
     "apellido": "Perez",
@@ -270,13 +290,15 @@ curl -X POST http://localhost:8000/pacientes \
 Listar médicos:
 
 ```bash
-curl http://localhost:8000/medicos
+curl http://localhost:8000/medicos \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 Obtener un médico por ID:
 
 ```bash
-curl http://localhost:8000/medicos/1
+curl http://localhost:8000/medicos/1 \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 Crear un médico:
@@ -284,6 +306,7 @@ Crear un médico:
 ```bash
 curl -X POST http://localhost:8000/medicos \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "nombre": "Ana",
     "apellido": "Gomez",
@@ -299,7 +322,36 @@ curl -X POST http://localhost:8000/medicos \
 Listar relaciones entre pacientes y médicos:
 
 ```bash
-curl http://localhost:8000/pacientes-medicos
+curl http://localhost:8000/pacientes-medicos \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+Listar médicos de un paciente:
+
+```bash
+curl http://localhost:8000/pacientes/1/medicos \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+Listar pacientes de un médico:
+
+```bash
+curl http://localhost:8000/medicos/1/pacientes \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+Vincular un paciente con un médico:
+
+```bash
+curl -X POST http://localhost:8000/pacientes/1/medicos/1 \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+Eliminar el vínculo entre un paciente y un médico:
+
+```bash
+curl -X DELETE http://localhost:8000/pacientes/1/medicos/1 \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Tratamientos
@@ -307,13 +359,15 @@ curl http://localhost:8000/pacientes-medicos
 Listar tratamientos:
 
 ```bash
-curl http://localhost:8000/tratamientos
+curl http://localhost:8000/tratamientos \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 Obtener un tratamiento por ID:
 
 ```bash
-curl http://localhost:8000/tratamientos/1
+curl http://localhost:8000/tratamientos/1 \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 Crear un tratamiento:
@@ -321,6 +375,7 @@ Crear un tratamiento:
 ```bash
 curl -X POST http://localhost:8000/tratamientos \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
   -d '{
     "nombre": "Kinesiologia",
     "descripcion": "Tratamiento semanal",

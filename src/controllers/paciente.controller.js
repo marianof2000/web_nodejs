@@ -62,13 +62,54 @@ module.exports = {
                 return pacienteCreado
             })
 
-            res.json({
+            res.status(201).location(`/pacientes/${paciente.id}`).json({
                 success: true,
                 data: {
                     id: paciente.id,
                     medicoId: medicoId || null
                 }
             })
+
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    actualizar: async (req, res, next) => {
+        try {
+            const paciente = await models.paciente.findOne({
+                where: {
+                    id: req.params.idPaciente
+                }
+            })
+            if (!paciente) return next(errors.PacienteInexistente)
+
+            await paciente.update(req.body)
+
+            res.json({
+                success: true,
+                data: {
+                    id: paciente.id
+                }
+            })
+
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    eliminar: async (req, res, next) => {
+        try {
+            const paciente = await models.paciente.findOne({
+                where: {
+                    id: req.params.idPaciente
+                }
+            })
+            if (!paciente) return next(errors.PacienteInexistente)
+
+            await paciente.destroy()
+
+            res.status(204).send()
 
         } catch (err) {
             return next(err)

@@ -28,6 +28,15 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     paranoid: true,
     freezeTableName: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['pacienteId', 'medicoId'],
+        where: {
+          deleted_at: null
+        }
+      }
+    ]
   })
 
   Paciente_Medico.associate = models => {
